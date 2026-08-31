@@ -9,6 +9,7 @@ As our Data Warehouse, we'll use DuckDB, follow instructions below to install Du
 - Move this file to the folder "Scripts" inside your virtual environment folder (i.e.: your_env/Scripts)
 - Now, you can use duckdb in the VS Code terminal. Type in your terminal: `duckdb my_database.duckdb`
 - It'll open a command line, type `desc;` and hit enter. It'll create a phisical database file in your system. 
+- type `.exit` to close DUCKDB terminal.
 
 ## DBeaver
 
