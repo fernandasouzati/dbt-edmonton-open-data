@@ -1,0 +1,23 @@
+models:
+- name: stg_311_requests
+  columns:
+    - name: request_id
+      tests:
+        - not_null
+        - unique
+    - name: status_name
+      tests:
+        - not_null
+        - accepted_values:
+            values: [Open, Closed, In Progress]
+- name: stg_building_permits
+  columns:
+    - name: permit_id
+      tests:
+        - not_null
+        - unique
+    - name: neighbourhood_id
+      tests:
+        - check_foreign_key:
+            dim_table_name: raw.raw_neighbourhoods
+            dim_id: neighbourhood_id

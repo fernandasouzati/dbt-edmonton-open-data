@@ -1,0 +1,9 @@
+version: 2
+
+sources:
+  - name: raw
+    description: "Raw landed tables in DuckDB"
+    tables:
+      - name: raw_311_requests
+      - name: raw_neighbourhoods
+      - name: raw_building_permits

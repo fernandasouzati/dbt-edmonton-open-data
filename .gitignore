@@ -1,0 +1,22 @@
+# DuckDB database files
+*.duckdb
+*.duckdb.wal
+
+# dbt output and dependencies
+target/
+dbt_packages/
+logs/
+.user.yml
+
+# dbt credentials
+# profiles.yml
+# # NOTE: if there is any dbt credentials NEED to remove this from commits
+# # but this is a practice project
+# # so we don't have and shouldn't have any credentials in this file
+# # what makes it safe to commit to Github
+
+# OS generated files
+.DS_Store
+
+# Env files
+*.env
