@@ -12,7 +12,7 @@ Follow these steps to set it up:
 
 # 2. Create a Virtual Environment
 
-- Open **PowerShell** or **Command Prompt** as an Administrator. Or the **Visual Studio Code Terminal**
+- Open your **Visual Studio Code Terminal** (You also can use **PowerShell** or **Command Prompt** - remember to open as an Administrator)
 - Navigate to the folder where you want your project, then create and activate a isolated environment:
 
 ```
