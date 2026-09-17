@@ -6,4 +6,5 @@ select
     ward, 
     ward_latitude,
     ward_longitude,
+    neighbourhood_combined
 from {{ ref('stg_dim_neighbourhoods') }}
