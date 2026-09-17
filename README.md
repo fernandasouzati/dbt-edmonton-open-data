@@ -8,14 +8,14 @@ This project was designed using a Medallion Architecture:
 - Silver (stg_* ): Cleaned, renamed, transformed dbt models.
 - Gold (fct_* / dim_*): Star schema with facts and dimensions ready for reporting.
 
-## 1. Setting up the Environment
+## 💻 1. Setting up the Environment
 
 If you need help setting up DBT, please, refer to the file `README_SETUP_DBT.md` in this repository. 
 
 I used DuckDB to build the Data Warehouse for this project. If need help installing DuckDB and setting up a connection, refer to the `README_SETUP_DUCKDB.md` file in this repository. 
 
 
-## 2. Setting up the Data Warehouse
+## 🧱 2. Setting up the Data Warehouse
 
 To build the raw tables in the Data Warehouse, run this SQL directly in DuckDB (you can use CLI, Python, or DBeaver): 
 
@@ -89,7 +89,7 @@ FROM bronze.raw_311_requests
 ```
 
 
-## Running the DBT project
+## ▶️ Running the DBT project
 
 Remember to activate the environment:
 
@@ -124,7 +124,7 @@ Remember to activate the environment:
 
 
 
-## DBT Resources:
+## 📌 DBT Resources:
 
 - Learn more about dbt [in the docs](https://docs.getdbt.com/docs/introduction)
 - Check out [Discourse](https://discourse.getdbt.com/) for commonly asked questions and answers
