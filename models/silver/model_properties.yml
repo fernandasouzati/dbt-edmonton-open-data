@@ -10,14 +10,15 @@ models:
         - not_null
         - accepted_values:
             values: [Open, Closed]
-    - name: service_description
+    - name: date_created
       tests:
         - check_foreign_key:
-            dim_table_name: silver.stg_dim_service
-            dim_id: service_description
+            arguments:
+              dim_table_name: silver.stg_dim_date
+              dim_id: date_day
 - name: stg_dim_service
   columns:
-    - name: service_description
+    - name: service_combined
       tests:
         - not_null
         - unique
