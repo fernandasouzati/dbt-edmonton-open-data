@@ -20,13 +20,13 @@ I used DuckDB to build the Data Warehouse for this project. If need help install
 To build the raw tables in the Data Warehouse, run this SQL directly in DuckDB (you can use CLI, Python, or DBeaver): 
 
 ```
--- Create raw staging schema
-CREATE SCHEMA IF NOT EXISTS raw;
+-------------------------------------------------------
+-- CREATE BRONZE LAYER (RAW DATA)
+-------------------------------------------------------
 
--------------------------------------------------------------------
--- 1. RAW 311 REQUESTS
--------------------------------------------------------------------
-CREATE OR REPLACE TABLE raw.raw_311_requests_csv (
+CREATE SCHEMA IF NOT EXISTS bronze;
+
+CREATE OR REPLACE TABLE bronze.raw_311_requests (
     row_id BIGINT PRIMARY KEY,
     date_closed VARCHAR,
     date_created VARCHAR,
@@ -54,6 +54,37 @@ CREATE OR REPLACE TABLE raw.raw_311_requests_csv (
     ward_location VARCHAR,
     count INTEGER
 );
+
+
+-------------------------------------------------------
+-- VERIFY TABLE CREATED
+-------------------------------------------------------
+
+DESC TABLE bronze.raw_311_requests ;
+
+
+-------------------------------------------------------
+-- INSERT AND VERIFY RAW DATA
+-------------------------------------------------------
+
+-- INSERT RAW data from CSV --- Using DuckDB!!!
+
+INSERT INTO bronze.raw_311_requests 
+SELECT * 
+FROM '311_Requests_20260914.csv';
+
+
+-- Inspect the data:
+
+SELECT * 
+FROM bronze.raw_311_requests
+LIMIT 10; 
+
+
+-- Check row Count:
+
+SELECT count(0) AS ct 
+FROM bronze.raw_311_requests
 
 ```
 
