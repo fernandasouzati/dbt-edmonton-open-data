@@ -1,0 +1,16 @@
+select
+    f.request_id,
+    {{ dbt_utils.generate_surrogate_key(['neighbourhood_combined']) }} as dim_neighbourhood_sk,
+    {{ dbt_utils.generate_surrogate_key(['service_combined']) }} as dim_service_sk,
+    {{ dbt_utils.generate_surrogate_key(['date_created']) }} as dim_date_sk,
+    request_status,
+    referral_type,
+    interaction_channel,
+    f.datetime_closed,
+    f.datetime_created,
+    f.date_created,
+    f.is_closed,
+    f.count,
+    date_diff('hour', f.datetime_created, f.datetime_closed) as resolution_hours,
+    case when not is_closed then 1 end as open_requests,
+from {{ ref('stg_fct_311_requests') }} f

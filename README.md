@@ -8,107 +8,114 @@ This project was designed using a Medallion Architecture:
 - Silver (stg_* ): Cleaned, renamed, transformed dbt models.
 - Gold (fct_* / dim_*): Star schema with facts and dimensions ready for reporting.
 
-## 1. Setting up the Environment
+## 💻 1. Setting up the Environment
 
 If you need help setting up DBT, please, refer to the file `README_SETUP_DBT.md` in this repository. 
 
 I used DuckDB to build the Data Warehouse for this project. If need help installing DuckDB and setting up a connection, refer to the `README_SETUP_DUCKDB.md` file in this repository. 
 
 
-## 2. Setting up the Data Warehouse
+## 🧱 2. Setting up the Data Warehouse
 
 To build the raw tables in the Data Warehouse, run this SQL directly in DuckDB (you can use CLI, Python, or DBeaver): 
 
 ```
--- Create raw staging schema
-CREATE SCHEMA IF NOT EXISTS raw;
+-------------------------------------------------------
+-- CREATE BRONZE LAYER (RAW DATA)
+-------------------------------------------------------
 
--------------------------------------------------------------------
--- 1. RAW NEIGHBOURHOODS (Dimension Source)
--------------------------------------------------------------------
-CREATE OR REPLACE TABLE raw.raw_neighbourhoods (
-    neighbourhood_id INTEGER PRIMARY KEY,
-    neighbourhood_name VARCHAR,
-    ward_name VARCHAR,
-    sector VARCHAR
+CREATE SCHEMA IF NOT EXISTS bronze;
+
+CREATE OR REPLACE TABLE bronze.raw_311_requests (
+    row_id BIGINT PRIMARY KEY,
+    date_closed VARCHAR,
+    date_created VARCHAR,
+    year INTEGER,
+    month_number INTEGER,
+    MONTH VARCHAR,
+    request_status VARCHAR,
+    status_detail VARCHAR,
+    service_category VARCHAR,
+    service_description VARCHAR,
+    interaction_channel VARCHAR,
+    service_area VARCHAR,
+    referral_type VARCHAR,
+    neighbourhood_id BIGINT,
+    neighbourhood VARCHAR,
+    ward VARCHAR,
+    service_category_service_area VARCHAR,
+    service_area_service_category VARCHAR,
+    service_area_service_description VARCHAR,
+    nbhd_latitude VARCHAR,
+    nbhd_longitude VARCHAR,
+    nbhd_location VARCHAR,
+    ward_latitude VARCHAR,
+    ward_longitude VARCHAR,
+    ward_location VARCHAR,
+    count INTEGER
 );
 
-INSERT INTO raw.raw_neighbourhoods VALUES
-    (1010, 'DOWNTOWN', 'O-day''min', 'Central'),
-    (1020, 'OLIVER', 'O-day''min', 'Central'),
-    (1030, 'STRATHCONA', 'Papastew', 'South'),
-    (1040, 'GARNEAU', 'Papastew', 'South'),
-    (1050, 'WESTMOUNT', 'sipiwiyiniwak', 'West'),
-    (1060, 'SUMMERSIDE', 'Karhiio', 'South');
 
--------------------------------------------------------------------
--- 2. RAW 311 SERVICE REQUESTS (Fact Source)
--------------------------------------------------------------------
-CREATE OR REPLACE TABLE raw.raw_311_requests (
-    service_request_id VARCHAR PRIMARY KEY,
-    service_name VARCHAR,
-    created_date TIMESTAMP,
-    closed_date TIMESTAMP,
-    status_description VARCHAR,
-    neighbourhood_id INTEGER,
-    latitude DOUBLE,
-    longitude DOUBLE
-);
+-------------------------------------------------------
+-- VERIFY TABLE CREATED
+-------------------------------------------------------
 
-INSERT INTO raw.raw_311_requests VALUES
-    ('SR-2026-001', 'Pothole Repair', '2026-03-01 08:30:00', '2026-03-03 14:15:00', 'Closed', 1010, 53.5461, -113.4938),
-    ('SR-2026-002', 'Snow Clearing', '2026-03-02 09:10:00', '2026-03-02 18:00:00', 'Closed', 1020, 53.5412, -113.5135),
-    ('SR-2026-003', 'Litter/Graffiti Cleanup', '2026-03-03 11:45:00', NULL, 'In Progress', 1030, 53.5181, -113.4981),
-    ('SR-2026-004', 'Pothole Repair', '2026-03-04 14:20:00', '2026-03-06 10:00:00', 'Closed', 1040, 53.5222, -113.5251),
-    ('SR-2026-005', 'Bicycle Path Maintenance', '2026-03-05 16:00:00', NULL, 'Open', 1050, 53.5489, -113.5411),
-    ('SR-2026-006', 'Tree Maintenance', '2026-03-06 07:50:00', '2026-03-07 12:30:00', 'Closed', 1060, 53.4211, -113.4722),
-    ('SR-2026-007', 'Pothole Repair', '2026-03-07 10:05:00', NULL, 'Open', 1010, 53.5430, -113.4910);
+DESC TABLE bronze.raw_311_requests ;
 
 
--- Inserting an error to practice tests in DBT:
-INSERT INTO raw.raw_311_requests VALUES
-('SR-2026-008', 'Error Missing neighbourhood', '2026-03-07 10:05:00', NULL, 'Open', 1000, 53.5430, -113.4910);
+-------------------------------------------------------
+-- INSERT AND VERIFY RAW DATA
+-------------------------------------------------------
+
+-- INSERT RAW data from CSV --- Using DuckDB!!!
+
+INSERT INTO bronze.raw_311_requests 
+SELECT * 
+FROM '311_Requests_20260914.csv';
 
 
--------------------------------------------------------------------
--- 3. RAW BUILDING PERMITS (Fact Source)
--------------------------------------------------------------------
-CREATE OR REPLACE TABLE raw.raw_building_permits (
-    permit_number VARCHAR PRIMARY KEY,
-    permit_type VARCHAR,
-    construction_value DOUBLE,
-    issue_date DATE,
-    neighbourhood_id INTEGER,
-    work_description VARCHAR
-);
+-- Inspect the data:
 
-INSERT INTO raw.raw_building_permits VALUES
-    ('P-2026-101', 'Commercial Final', 1250000.00, '2026-01-15', 1010, 'Interior Alteration to Commercial Space'),
-    ('P-2026-102', 'Residential Mixed Use', 450000.00, '2026-01-22', 1020, 'New Single Detached House with Garage'),
-    ('P-2026-103', 'Uncategorized/Other', 35000.00, '2026-02-01', 1030, 'Basement Finishing'),
-    ('P-2026-104', 'Commercial Final', 3200000.00, '2026-02-10', 1010, 'Multi-Unit Residential Development'),
-    ('P-2026-105', 'Residential Mixed Use', 18000.00, '2026-02-18', 1050, 'Detached Garage Construction'),
-    ('P-2026-106', 'Residential Mixed Use', 520000.00, '2026-03-01', 1060, 'New Construction Single Family');
+SELECT * 
+FROM bronze.raw_311_requests
+LIMIT 10; 
+
+
+-- Check row Count:
+
+SELECT count(0) AS ct 
+FROM bronze.raw_311_requests
 
 ```
 
 
-## Running the DBT project
+## ▶️ Running the DBT project
 
-Usefull DBT commands:
+Remember to activate the environment:
+
+`.\dbt-env\Scripts\activate`
+
+### Usefull DBT commands:
 
 - `dbt --version` check the dbt version installed
 - `dbt -h` help 
 - `dbt init` create a new DBT project
 - `dbt debug` scan project for issues
 
-Run following DBT commands:
+### DBT run commands:
 
 - `dbt run` to materialize the models
+- `dbt run --exclude tag:never_refresh` to materialize the models, excluding static models that should not be refreshed every run. (i.e.: stg_dim_date)
+- `dbt run  --select stg_dim_date` to materialize only the stg_dim_date. 
+
+
+### DBT test commands:
+
 - `dbt test` to run all tests
 - `dbt test --select test_name` to run a specific test
 
-For Documentation:
+
+### For Documentation:
 
 - `dbt docs` generate documentation
 - `dbt docs -h` help
@@ -117,7 +124,7 @@ For Documentation:
 
 
 
-## DBT Resources:
+## 📌 DBT Resources:
 
 - Learn more about dbt [in the docs](https://docs.getdbt.com/docs/introduction)
 - Check out [Discourse](https://discourse.getdbt.com/) for commonly asked questions and answers

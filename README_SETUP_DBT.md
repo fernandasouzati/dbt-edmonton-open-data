@@ -1,16 +1,16 @@
-# Set Up DBT
+# 💻 Set Up DBT
 
 To install dbt Core on a Windows computer, the recommended and most stable method is to install it inside a virtual environment using Python and pip.
 
 Follow these steps to set it up:
 
-# 1. Install Python
+# 📌 1. Install Python
 
 - Download Python 3.9, 3.10, or 3.11 from the official Python website https://www.python.org/downloads/
 - Run the installer.
 - **Important:** Check the box that says "Add python.exe to PATH" before clicking install.
 
-# 2. Create a Virtual Environment
+# 📌 2. Create a Virtual Environment
 
 - Open your **Visual Studio Code Terminal** (You also can use **PowerShell** or **Command Prompt** - remember to open as an Administrator)
 - Navigate to the folder where you want your project, then create and activate a isolated environment:
@@ -27,7 +27,7 @@ python -m venv dbt-env
 .\dbt-env\Scripts\activate
 ```
 
-# 3. Install dbt Core and your Database Adapter
+# 📌 3. Install dbt Core and your Database Adapter
 
 Do not install just dbt-core. You must install the specific adapter for your data warehouse. 
 This will automatically install dbt-core as a dependency. 
@@ -41,7 +41,7 @@ Run one of the following commands based on your database:
 - For Databricks: `pip install dbt-databricks`
 - For DuckDB: `pip install dbt-duckdb`
 
-# 4. Verify the Installation
+# 📌 4. Verify the Installation
 
 Run this command to make sure it installed correctly:
 

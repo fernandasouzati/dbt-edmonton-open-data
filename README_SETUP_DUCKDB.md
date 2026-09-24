@@ -1,6 +1,6 @@
-# Set Up DuckDB
+# 🦆 Set Up DuckDB
 
-## DuckDB CLI (Command Line Interface)
+## 📌 DuckDB CLI (Command Line Interface)
 
 As our Data Warehouse, we'll use DuckDB, follow instructions below to install DuckDB CLI: 
 
@@ -15,7 +15,7 @@ As our Data Warehouse, we'll use DuckDB, follow instructions below to install Du
 	- It'll open a command line, type `desc;` and hit enter. It'll create a physical database file in your system. 
 	- type `.exit` to close DUCKDB terminal.
 
-## DBeaver
+## 📌 DBeaver
 
 DBeaver Community is a free, open-source database management tool recommended for personal projects. 
 

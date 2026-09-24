@@ -1,6 +1,7 @@
 # DuckDB database files
 *.duckdb
 *.duckdb.wal
+*.duckdb.tmp
 
 # dbt output and dependencies
 target/
