@@ -2,12 +2,12 @@ SELECT *, concat('(', service_area, ') ', service_category, ' - ', service_descr
 FROM (
 	( 
 	SELECT DISTINCT   
-		'Uncategorized' AS service_area,
-		'Uncategorized' AS service_category,	
-		'Uncategorized' AS service_description,
-		'Uncategorized  (Uncategorized)' AS service_category_service_area,
-		'(Uncategorized)  Uncategorized 'AS service_area_service_category,
-		'(Uncategorized)  Uncategorized' AS service_area_service_description
+		'No Service Area' AS service_area,
+		'No Service Category' AS service_category,	
+		'No Service Description' AS service_description,
+		'No Service Category  (No Service Area)' AS service_category_service_area,
+		'(No Service Area)  No Service Category 'AS service_area_service_category,
+		'(No Service Area)  No Service Description' AS service_area_service_description
 	FROM {{ source('bronze', 'raw_311_requests') }}
 	WHERE service_description IS NULL or service_category is null or service_area is null 
 	) UNION ALL (
